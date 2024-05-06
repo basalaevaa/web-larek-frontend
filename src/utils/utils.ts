@@ -133,3 +133,9 @@ export function createElement<
     }
     return element;
 }
+
+export function formatNumber(item: number, sep = ' ', decimalSep = '.'): string {
+    const parts = item.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+    return parts.join(decimalSep);
+}
