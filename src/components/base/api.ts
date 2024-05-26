@@ -1,4 +1,8 @@
-import { PageInterface } from "../../types";
+export interface PageInterface {
+	counter: number;
+	gallery: HTMLElement[];
+	locked: boolean;
+}
 
 export type ApiListResponse<Type> = {
     total: number,
@@ -27,24 +31,28 @@ export class Api {
         };
     }
 
-    protected handleResponse(response: Response): Promise<object> {
+    protected async handleResponse(response: Response): Promise<object> {
         if (response.ok) return response.json();
-        else return response.json()
-            .then(data => Promise.reject(data.error ?? response.statusText));
+        else {
+            const data = await response.json();
+            return await Promise.reject(data.error ?? response.statusText);
+        }
     }
 
-    get(uri: string) {
-        return fetch(this.baseUrl + uri, {
+    async get(uri: string) {
+        const response = await fetch(this.baseUrl + uri, {
             ...this.options,
-            method: 'GET'
-        }).then(this.handleResponse);
+            method: 'GET',
+        });
+        return this.handleResponse(response);
     }
 
-    post(uri: string, data: object, method: ApiPostMethods = 'POST') {
-        return fetch(this.baseUrl + uri, {
+    async post(uri: string, data: object, method: ApiPostMethods = 'POST') {
+        const response = await fetch(this.baseUrl + uri, {
             ...this.options,
             method,
-            body: JSON.stringify(data)
-        }).then(this.handleResponse);
+            body: JSON.stringify(data),
+        });
+        return this.handleResponse(response);
     }
 }
