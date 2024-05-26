@@ -2,7 +2,7 @@ import { ensureElement, cloneTemplate } from '../../utils/utils';
 import { Component } from '../Component';
 import { IEvents } from '../base/events';
 import { Validation } from '../../types';
-import { ValidationHelper } from '../fret';
+import { ValidationHelper } from '../Validation';
 
 interface ISuccess {
 	description: string;

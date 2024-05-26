@@ -1,7 +1,7 @@
 import { ensureElement, cloneTemplate } from '../../utils/utils';
 import { Component } from '../Component';
 import { IEvents } from '../base/events';
-import { ValidationHelper } from '../fret';
+import { ValidationHelper } from '../Validation';
 import { Validation } from '../../types';
 
 interface IBasket {

@@ -2,7 +2,7 @@ import { ensureElement, cloneTemplate } from '../../utils/utils';
 import { Component } from '../Component';
 import { Validation } from '../../types';
 import { IEvents } from '../base/events';
-import { ValidationHelper } from '../fret';
+import { ValidationHelper } from '../Validation';
 
 interface IOrder {
 	payment: 'card' | 'cash';
