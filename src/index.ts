@@ -12,7 +12,7 @@ import {
 	OrderPayment,
 } from './components/common/OrderForm';
 import { SuccessOrder } from './components/common/Success';
-import { BasketState, OrderState } from './components/state';
+import { BasketState, OrderState } from './components/State';
 import {
 	CatalogProduct,
 	ProductCard,
