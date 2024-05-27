@@ -1,5 +1,5 @@
 import { ensureElement, cloneTemplate } from '../../utils/utils';
-import { Component } from '../Component';
+import { Component } from '../base/Component';
 import { IEvents } from '../base/events';
 import { Validation } from '../../types';
 import { ValidationHelper } from '../Validation';
@@ -28,7 +28,7 @@ export class SuccessOrder extends Component<ISuccess> {
 		);
 
 		this._closeButton.addEventListener('click', () => {
-			events.emit('success_close');
+			events.emit('successСlose');
 		});
 	}
 

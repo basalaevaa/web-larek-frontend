@@ -1,6 +1,5 @@
 import { ensureElement, cloneTemplate } from '../../utils/utils';
-import { Component } from '../Component';
-import { Validation } from '../../types';
+import { Component } from '../base/Component';
 
 interface IProduct {
 	description: string;
@@ -10,7 +9,6 @@ interface IProduct {
 	price: string;
 	isInBasket?: boolean;
 	itemIndex?: number;
-	validation?: Validation;
 	categoryClass: string;
 }
 
@@ -123,19 +121,13 @@ export class ProductCard extends Product {
 		this.setText(this._toBasketButton, inBasket ? 'Убрать' : 'В корзину');
 	}
 
-	set validation(value: IProduct['validation']) {
-		if (value && value.length !== 0) {
-			this.setDisabled(this._toBasketButton, true);
-			this._toBasketButton.setAttribute(
-				'title',
-				value.map((x) => x.error).join('; ')
-			);
-		} else {
-			this.setDisabled(this._toBasketButton, false);
-			this._toBasketButton.setAttribute('title', '');
-		}
+	set price(value: string) {
+		this._price && (this._price.textContent = value);
+		const isPriceValid = value !== 'Бесценно';
+		this.setDisabled(this._toBasketButton, !isPriceValid);
 	}
 }
+
 
 export class BasketProduct extends Product {
 	protected _itemIndex: HTMLElement;

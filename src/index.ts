@@ -1,22 +1,25 @@
 import './scss/styles.scss';
-import { API_URL, CDN_URL } from './utils/constants';
+import { API_URL, CDN_URL, categories } from './utils/constants';
 import { EventEmitter } from './components/base/events';
 import { ApiService } from './components/ApiService';
 import { Product } from './types';
-import { HomePage } from './components/common/HomePage';
+import { HomePage } from './components/common/Page';
 import { Modal } from './components/common/Modal';
 import { Basket } from './components/common/Basket';
 import { BasketProduct } from './components/common/Product';
 import {
 	OrderContacts,
 	OrderPayment,
-} from './components/common/OrderForm';
+} from './components/common/Order';
 import { SuccessOrder } from './components/common/Success';
-import { BasketState, OrderState } from './components/State';
+import { BasketState, OrderState } from './components/state';
 import {
 	CatalogProduct,
 	ProductCard,
 } from './components/common/Product';
+
+// Извините, не проверила файл, когда исправила на компьютере. 
+// Дополнила код в соответствии с замечаниями
 
 const events = new EventEmitter();
 const apiService = new ApiService(API_URL, CDN_URL);
@@ -28,14 +31,6 @@ const basket = new Basket(events);
 const orderPayment = new OrderPayment(events);
 const orderContacts = new OrderContacts(events);
 const successOrder = new SuccessOrder(events);
-
-const categories = {
-    'софт-скил': 'soft',
-    другое: 'other',
-    дополнительное: 'additional',
-    кнопка: 'button',
-    'хард-скил': 'hard',
-};
 
 const renderProduct = (product: Product) => {
     const products = new CatalogProduct({
@@ -94,7 +89,7 @@ function createBasketItem(basket: Basket) {
 		});
 		return products.render({
 			...product,
-			price: `${product.price} cинапсов`,
+			price: `${product.price} синапсов`,
 			categoryClass: '',
 			itemIndex,
 		});
@@ -115,7 +110,7 @@ events.on<{ product: Product; basket: Basket }>(
 	}
 );
 
-events.on('basket_open', () => {
+events.on('basketOpen', () => {
 	const content = basket.render({
 		items: basketState.items.map((item, i) =>
 			createBasketItem(basket)(item, i + 1)
@@ -125,7 +120,7 @@ events.on('basket_open', () => {
 	modal.render({ content });
 });
 
-events.on('basket_order', () => {
+events.on('basketOrder', () => {
 	if (basketState.items.length) {
 		orderState.items = basketState.items;
 	}
@@ -160,8 +155,6 @@ events.on('addressInput', (data: { value: string }) => {
 
 events.on('submitPayment', () => {
 	const orderValidation = orderState.validation([
-		'items',
-		'address',
 		'phone',
 		'email',
 	]);
@@ -213,7 +206,7 @@ events.on('submitContact', () => {
 });
 
 
-events.on('success_close', () => {
+events.on('successСlose', () => {
 	modal.close();
 	homePage.render({ counter: basketState.count() });
 });

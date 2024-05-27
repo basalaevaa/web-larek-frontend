@@ -1,5 +1,5 @@
 import { Order, Product, Validation } from '../types';
-import { validateOrder } from './ValidationForm';
+import { validateOrder } from './Validation';
 
 export class BasketState {
 	protected _value: { items: Product[] };
