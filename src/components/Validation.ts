@@ -2,7 +2,6 @@ import { Validation, OrderValidationKeys } from '../types';
 
 export function validateOrder(order: any, keys: OrderValidationKeys[]): Validation {
     const validation: Validation = [];
-
     keys.forEach((key) => {
         switch (key) {
             case 'items':
