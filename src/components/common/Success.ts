@@ -1,6 +1,6 @@
 import { ensureElement, cloneTemplate } from '../../utils/utils';
 import { Component } from '../base/Component';
-import { IEvents } from '../base/events';
+import { IEvents } from '../base/Events';
 import { Validation } from '../../types';
 import { ValidationHelper } from '../Validation';
 
