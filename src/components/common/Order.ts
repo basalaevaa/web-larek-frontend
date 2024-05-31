@@ -1,7 +1,7 @@
 import { ensureElement, cloneTemplate } from '../../utils/utils';
 import { Component } from '../base/Component';
 import { Validation } from '../../types';
-import { IEvents } from '../base/events';
+import { IEvents } from '../base/Events';
 import { ValidationHelper } from '../Validation';
 
 interface IOrder {
