@@ -1,6 +1,6 @@
 import { ensureElement } from '../../utils/utils';
 import { Component } from '../base/Component';
-import { IEvents } from '../base/events';
+import { IEvents } from '../base/Events';
 
 interface IModal {
 	content: HTMLElement;
@@ -36,13 +36,15 @@ export class Modal extends Component<IModal> {
 		this._content.replaceChildren(value);
 	}
 
-	open() {
-		this.container.classList.add('modal_active');
-	}
+    open() {
+        this.container.classList.add('modal_active');
+        document.body.style.overflow = 'hidden';
+    }
 
-	close() {
-		this.container.classList.remove('modal_active');
-	}
+    close() {
+        this.container.classList.remove('modal_active');
+        document.body.style.overflow = ''; 
+    }
 
 	render(data: IModal): HTMLElement {
 		super.render(data);
