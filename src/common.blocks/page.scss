@@ -7,6 +7,23 @@ body.page {
 	font-size: $baseFontSize;
 	color: $baseFontColor;
 	background: $background;
+
+	&::-webkit-scrollbar {
+		width: 9px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: $primaryLight;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: $primary;
+		border-radius: 6px;
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background: darken($primary, 10%);
+	}
 }
 
 .page__wrapper {
