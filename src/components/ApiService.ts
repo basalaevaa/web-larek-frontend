@@ -1,4 +1,4 @@
-import { Api } from './base/api';
+import { Api } from './base/Api';
 import { Order, Product, ProductId, SentOrder } from '../types';
 
 export interface IApiService {
