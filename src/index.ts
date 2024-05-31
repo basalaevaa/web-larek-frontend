@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { API_URL, CDN_URL, categories } from './utils/constants';
-import { EventEmitter } from './components/base/events';
+import { EventEmitter } from './components/base/Events';
 import { ApiService } from './components/ApiService';
 import { Product } from './types';
 import { HomePage } from './components/common/Page';
@@ -18,8 +18,8 @@ import {
 	ProductCard,
 } from './components/common/Product';
 
-// Извините, не проверила файл, когда исправила на компьютере. 
-// Дополнила код в соответствии с замечаниями
+// Спасибо за ревью!
+// немножко поигралась со скроллом в корзине и на основной странице, чтобы он был под стиль страницы
 
 const events = new EventEmitter();
 const apiService = new ApiService(API_URL, CDN_URL);
@@ -91,7 +91,7 @@ function createBasketItem(basket: Basket) {
 			...product,
 			price: `${product.price} синапсов`,
 			categoryClass: '',
-			itemIndex,
+			itemIndex: itemIndex + 1,
 		});
 	};
 }
@@ -103,7 +103,7 @@ events.on<{ product: Product; basket: Basket }>(
 		homePage.render({ counter: basketState.count() });
 		modal.render({
 			content: basket.render({
-				items: basketState.items.map(createBasketItem(basket)),
+				items: basketState.items.map((item, i) => createBasketItem(basket)(item, i)),
 				total: `${basketState.total} синапсов`,
 			}),
 		});
@@ -111,13 +111,12 @@ events.on<{ product: Product; basket: Basket }>(
 );
 
 events.on('basketOpen', () => {
-	const content = basket.render({
-		items: basketState.items.map((item, i) =>
-			createBasketItem(basket)(item, i + 1)
-		),
-		total: `${basketState.total} синапсов`,
-	});
-	modal.render({ content });
+    const content = basket.render({
+        items: basketState.items.map((item, i) => createBasketItem(basket)(item, i)),
+        total: `${basketState.total} синапсов`,
+    });
+    modal.render({ content });
+	basket._toggleScroll();
 });
 
 events.on('basketOrder', () => {
@@ -183,30 +182,32 @@ events.on('phoneNumberInput', (data: { value: string }) => {
 });
 
 events.on('submitContact', () => {
-	apiService.sendOrder(orderState.value).then(function (res) {
-		if ('error' in res) {
-			console.log(res);
-			return;
-		}
+    apiService.sendOrder(orderState.value).then(function (res) {
+        if ('error' in res) {
+            console.log(res);
+            return;
+        }
 
-		const orderValidation = orderState.validation([
-			'phone',
-			'email',
-		]);
+        const orderValidation = orderState.validation([
+            'phone',
+            'email',
+        ]);
 
-		basketState.clear();
-		orderState.clear();
-		modal.render({
-			content: successOrder.render({
-				validation: orderValidation,
-				description: `Списано ${res.total} синапсов`,
-			}),
-		});
-	});
+        basketState.clear();
+        orderState.clear();
+		homePage.render({ counter: basketState.count() });
+        modal.render({
+            content: successOrder.render({
+                validation: orderValidation,
+                description: `Списано ${res.total} синапсов`,
+            }),
+        });
+    });
 });
 
-
 events.on('successСlose', () => {
+
 	modal.close();
-	homePage.render({ counter: basketState.count() });
+	basketState.clear();
+    homePage.render({ counter: basketState.count() });
 });
